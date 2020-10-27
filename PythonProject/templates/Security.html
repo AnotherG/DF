@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<style>
+
+    myChart{
+
+  width:500px !important;
+  height:600px !important;
+
+}
+</style>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Hello, world!</title>
+  </head>
+  <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{{ url_for('hello') }}">OneStop-Logs</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('LoginLogs') }}">Overview<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('Security') }}">Security</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('Application') }}">Application</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('System') }}">System</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('System') }}">Timeline Analysis</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('raw') }}">Raw</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+ <div class="container abc">
+          <div class="row">
+        <form  method="POST">
+          <button type="submit" class="alert alert-success  mr-2 btn btn-primary" name="submit_a" value="submit_a">
+              <h4 class="alert-heading">Success Logins</h4>
+               <p>{{ suc }}</p>
+          </button>
+           <button type="submit" class="alert alert-danger  mr-2 btn btn-primary" name="submit_b" value="submit_b">
+              <h4 class="alert-heading">Failed Logins</h4>
+        <p>{{ fai }}</p>
+          </button>
+        </form>
+      </div>
+
+  </div>
+
+   <canvas id="myChart"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+{% block javascript %}
+	<script type="text/javascript">
+
+       var ctx = document.getElementById("myChart");
+    ctx.width  = 10;
+    ctx.height = 20;
+    var labels = '{{ labels | tojson |  safe }}'
+       var data = '{{ data | tojson |  safe }}'
+        var failure = '{{ failure | tojson |  safe }}'
+       var label1 = JSON.parse(labels)
+    var data1 = JSON.parse(data)
+ var fails = JSON.parse(failure)
+var myChart = new Chart(ctx, {
+  type: "bar",
+    options: {
+      responsive: true,
+        maintainAspectRatio: false,
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+},
+  data: {
+    labels: label1,
+
+    datasets: [
+      {
+        label: "Success Logins",
+        data: data1,
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+        ]
+      },{
+        label: "Failure Logins",
+
+        data: fails,
+        backgroundColor: [
+            "rgba(0, 99, 132, 0.2)",
+        ]
+      }
+    ]
+
+  }
+
+});
+
+    </script>
+
+{% endblock %}
+<script type="text/javascript"
+         src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

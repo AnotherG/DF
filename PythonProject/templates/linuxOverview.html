@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <style>
+          .scrollbar{
+              height: 500px !important;
+            overflow: scroll;
+          }
+
+      </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Hello, world!</title>
+  </head>
+  <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">OneStop-Logs</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('LinuxOverview') }}">Overview<span class="sr-only">(current)</span></a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('LinuxUsers') }}">User Activity</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="row">
+<div class="table-responsive col-md-6 scrollbar">
+<table class="table">
+<caption style="caption-side: top;font-weight: bold;font-size:150%" >Remote Logins</caption>
+  <thead>
+    <tr>
+      <th scope="col">Username</th>
+      <th scope="col">Port</th>
+      <th scope="col">From</th>
+      <th scope="col">Latest</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for item in lastlogs %}
+<TR>
+   <TD class="c1">{{item.user}}</TD>
+   <TD class="c2">{{item.port}}</TD>
+   <TD class="c3"><SPAN>{{item.from1}}</SPAN></TD>
+   <TD class="c4"><SPAN>{{item.latest}}</SPAN></TD>
+</TR>
+{% endfor %}
+  </tbody>
+</table>
+
+  </div>
+<div class="table-responsive col-md-6 scrollbar">
+<table class="table">
+<caption style="caption-side: top;font-weight: bold;font-size:150%" >Usb Captures</caption>
+  <thead>
+    <tr>
+       <th scope="col">Date</th>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Product</th>
+      <th scope="col">Serial number</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for item in usbs %}
+<TR>
+   <TD class="c1">{{item.time}}</TD>
+   <TD class="c1">{{item.man}}</TD>
+   <TD class="c2">{{item.product}}</TD>
+   <TD class="c3"><SPAN>{{item.sn}}</SPAN></TD>
+
+</TR>
+{% endfor %}
+  </tbody>
+</table>
+
+  </div>
+  </div>
+<div class="row">
+<div class="table-responsive col-md-6 scrollbar">
+<table class="table">
+<caption style="caption-side: top;font-weight: bold;font-size:150%" >SU</caption>
+  <thead>
+    <tr>
+      <th scope="col">Time</th>
+      <th scope="col">SU</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for item in sus %}
+<TR>
+   <TD class="c1">{{item.time}}</TD>
+   <TD class="c2">{{item.su}}</TD>
+
+</TR>
+{% endfor %}
+  </tbody>
+</table>
+
+  </div>
+
+    <div class="table-responsive col-md-6 scrollbar">
+<table class="table">
+<caption style="caption-side: top;font-weight: bold;font-size:150%" >Error Messages</caption>
+  <thead>
+    <tr>
+      <th scope="col">Time</th>
+      <th scope="col">Services</th>
+        <th scope="col">Message</th>
+        <th scope="col">Level</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for item in messages %}
+<TR>
+   <TD class="c1">{{item.time}}</TD>
+   <TD class="c2">{{item.services}}</TD>
+ <TD class="c3">{{item.message}}</TD>
+     <TD class="c4">{{item.level}}</TD>
+</TR>
+{% endfor %}
+  </tbody>
+</table>
+
+  </div>
+  </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
