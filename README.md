@@ -1,5 +1,5 @@
 # OneStopLogs
-OneStopLogs provides a script that is able to determine your machine's OS (Windows or Linux) and collect the logs accordingly.
+OneStopLogs provides a script that is able to determine your machine's OS (Windows or Linux) and collect the logs accordingly. <br/>
 OneStopLogs also provides a web application that is able to analyse and visualise the logs that were collected from the script.
 
 ## Installation
