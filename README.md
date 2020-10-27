@@ -10,7 +10,7 @@ Flask
 Werkzeug
 
 ## Usage
-!!!Files(onestoplogs.bat & onestoplogs.ps1) in /Scripts must be in the same directory of your choosing
+**Files(onestoplogs.bat & onestoplogs.ps1) in /Scripts must be in the same directory of your choosing
 
 Windows:
 Right click the onestoplogs.ps1 > properties > General > uncheck the Unblock checkbox (powershell scripts that are downloaded can be blocked by windows)
