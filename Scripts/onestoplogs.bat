@@ -1,4 +1,5 @@
 #|| goto :batch_part
+ echo "Detected Linux OS"
   #get media directory
   OUTPUT=$(pwd) 
   #get today's date
@@ -16,7 +17,7 @@
   < /var/log/kern.log awk '{if(NR==1){print "Date| Hostname| Service| Message";}else{printf $2" "$1" "$3 " | " $4 " | " $5 " | "; s = ""; for (i = 6; i <= NF; i++) s = s $i " "; print s "|"}}' >> ${OUTPUT}/temp/logs/linux/${OUTPUT1}/kernLogs.csv
   
   #getting last logins from users who log in within 7 days
-  lastlog -b 0 -t 7 | awk '{printf $1"| "$2"| "$3 " | "; s = ""; for (i = 4; i <= NF; i++) s = s $i " "; print s "|"}'> ${OUTPUT}/temp/logs/linux/${OUTPUT1}/lastLog.csv
+  lastlog | grep -v "Never logged" | awk '{printf $1"| "$2"| "$3 " | "; s = ""; for (i = 4; i <= NF; i++) s = s $i " "; print s "|"}'> ${OUTPUT}/temp/logs/linux/${OUTPUT1}/lastLog.csv
 
 
   #getting history(command) of all users and root
@@ -45,7 +46,7 @@ exit
 
 :batch_part
  @ECHO OFF  
- echo "Detected Linux OS"
+ echo "Detected Windows OS"
  PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList 'Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force' -Verb RunAs}"
  powershell.exe  -Command  "Unblock-File -Path %cd%/onestoplogs.ps1"
  powershell.exe  -Command  "Start-Process  powershell -argument '%cd%/onestoplogs.ps1 %cd%' -verb runas"
