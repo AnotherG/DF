@@ -1,4 +1,5 @@
 import csv
+import os
 
 
 # Get list of users
@@ -54,13 +55,18 @@ def readCommands(path, user):
 # lastlog command
 def LastLogs(path):
     items = []
-    with open(path + '\\lastLog.csv', 'r') as f:
-        reader = csv.reader(f, delimiter="|")
-        next(f)
-        for row in reader:
-            an_item = dict(user=row[0], port=row[1], from1=row[2], latest=row[3])
-            items.append(an_item)
+    if os.stat(path + '\\lastLog.csv').st_size == 0:
         return items
+    else:
+        with open(path + '\\lastLog.csv', 'r') as f:
+            reader = csv.reader(f, delimiter="|")
+            next(f)
+            for row in reader:
+                an_item = dict(user=row[0], port=row[1], from1=row[2], latest=row[3])
+                items.append(an_item)
+            return items
+
+
 
 
 # getting list of newly installed usb devices from kern logs
