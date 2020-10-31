@@ -40,7 +40,7 @@ Open a web browser and type in 127.0.0.1:5000<br/>
 Insert the file path of the logs into the text box ({.bat Directory}/temp/logs/{OS}/{today's date})
 
 ## Team Members
-Tay Qi Wen Jordan (1902114)<br/>
-Poh Hong Yi (1902148)<br/>
-Poh Qi Xian Bryan (1902197)<br/>
-Lee Khai Liang Eugene (1902155)
+Tay Qi Wen Jordan
+Poh Hong Yi
+Poh Qi Xian Bryan
+Lee Khai Liang Eugene
