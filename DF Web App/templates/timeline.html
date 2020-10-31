@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        .scrollbar {
+            height: 500px !important;
+            overflow: scroll;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>OneStopLogs</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ url_for('hello') }}">OneStop-Logs</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('LoginLogs') }}">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('Security') }}">Security</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('Application') }}">Application</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('System') }}">System</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('Timeline') }}">Timeline Analysis</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('raw') }}">Raw</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="myChart1"></canvas>
+    </div>
+</div>
+</div>
+<div class="row">
+    <div class="table-responsive col-md-6 scrollbar left">
+
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Prefetch</caption>
+            <thead>
+            <tr>
+                <th scope="col">Filename</th>
+                <th scope="col">Creation Time</th>
+                <th scope="col">Last Access Time</th>
+                <th scope="col">Last Written Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in prefetch %}
+            <TR>
+                <TD class="c1">{{item.file}}</TD>
+                <TD class="c2">{{item.creation}}</TD>
+                <TD class="c3">{{item.access}}</TD>
+                <TD class="c3">{{item.write}}</TD>
+            </TR>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="table-responsive col-md-6 scrollbar left">
+
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Recent</caption>
+            <thead>
+            <tr>
+                <th scope="col" style="max-width:300px;word-wrap:break-word;">Filename</th>
+                <th scope="col">Creation Time</th>
+                <th scope="col">Last Access Time</th>
+                <th scope="col">Last Written Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in recent %}
+            <TR>
+                <TD class="c1" style="max-width:300px;word-wrap:break-word;">{{item.file}}</TD>
+                <TD class="c2">{{item.creation}}</TD>
+                <TD class="c3">{{item.access}}</TD>
+                <TD class="c4">{{item.write}}</TD>
+            </TR>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive col-md-6 scrollbar left">
+
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Session Manager</caption>
+            <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Message</th>
+                <th scope="col">User</th>
+                <th scope="col">Source</th>
+                <th scope="col">Session Id</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in lsm %}
+            <TR>
+                <TD class="c1">{{item.time}}</TD>
+                <TD class="c2">{{item.message}}</TD>
+                <TD class="c3">{{item.user}}</TD>
+                <TD class="c3">{{item.source}}</TD>
+                <TD class="c3">{{item.sessionid}}</TD>
+            </TR>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="table-responsive col-md-6 scrollbar left">
+
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Wlan</caption>
+            <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Message</th>
+                <th scope="col">SSID</th>
+                <th scope="col">Modes</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in wlan %}
+            <TR>
+                <TD class="c1">{{item.time}}</TD>
+                <TD class="c2">{{item.message}}</TD>
+                <TD class="c3">{{item.ssid}}</TD>
+                <TD class="c3">{{item.modes}}</TD>
+            </TR>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<!-- myChart-->
+{% block javascript %}
+<script>
+    var dates = '{{ Pdates | tojson |  safe }}'
+    var date = JSON.parse(dates)
+    var apps = '{{ Pcounts | tojson |  safe }}'
+    var app = JSON.parse(apps)
+    var cres = '{{ Pcreation | tojson |  safe }}'
+    var cre = JSON.parse(cres)
+    var wris = '{{ Pwritten | tojson |  safe }}'
+    var wri = JSON.parse(wris)
+
+    console.log(date)
+    new Chart(document.getElementById("myChart"), {
+        type: 'line',
+        data: {
+            labels: date,
+            datasets: [{
+                data: app,
+                label: "Files Accessed",
+                borderColor: "#3e95cd",
+                fill: false
+            },
+                {
+                    data: cre,
+                    label: "Files Created",
+                    borderColor: "#24dd8a",
+                    fill: false
+                },
+                {
+                    data: wri,
+                    label: "Files Written",
+                    borderColor: "#e91545",
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Prefetch'
+            }
+        }
+    });
+</script>
+
+
+<!-- myChart1-->
+
+<script>
+    var dates = '{{ Rdates | tojson |  safe }}'
+    var date = JSON.parse(dates)
+    var apps = '{{ Rcounts | tojson |  safe }}'
+    var app = JSON.parse(apps)
+    var cres = '{{ Rcreation | tojson |  safe }}'
+    var cre = JSON.parse(cres)
+    var wris = '{{ Rwritten | tojson |  safe }}'
+    var wri = JSON.parse(wris)
+
+    console.log(date)
+    new Chart(document.getElementById("myChart1"), {
+        type: 'line',
+        data: {
+            labels: date,
+            datasets: [{
+                data: app,
+                label: "Files Accessed",
+                borderColor: "#3e95cd",
+                fill: false
+            },
+                {
+                    data: cre,
+                    label: "Files Created",
+                    borderColor: "#24dd8a",
+                    fill: false
+                },
+                {
+                    data: wri,
+                    label: "Files Written",
+                    borderColor: "#e91545",
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Recent'
+            }
+        }
+    });
+</script>
+
+{% endblock %}
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

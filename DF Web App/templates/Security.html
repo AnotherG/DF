@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <style>
+
+        #myChart {
+            height: 800px !important;
+        }
+        .scrollbar {
+            height: 500px !important;
+            overflow: scroll;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>OneStopLogs</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ url_for('hello') }}">OneStop-Logs</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('LoginLogs') }}">Overview<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('Security') }}">Security</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('Application') }}">Application</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('System') }}">System</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('Timeline') }}">Timeline Analysis</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('raw') }}">Raw</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="col-md-12">
+    <canvas id="myChart" type="submit"></canvas>
+
+    <form method="POST">
+        <button type="submit" class="btn btn-primary" id="e02" name="buttonName" value="Information" hidden>Primary
+        </button>
+    </form>
+</div>
+
+<div class="row">
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Login Security Events</caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in loginEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Critical Security Events</caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in criticalEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Service Security Events</caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in serviceEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">User Account Security Event</caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in userAccEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Computer Account Security Events
+            </caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in comAccEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Security Group Security Event</caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in sgEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Object Security Events</caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in objEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Cryptographic Context Security Event
+            </caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in crptoEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">Network Share Object Security Events
+            </caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in networkEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="table-responsive col-md-6 scrollbar">
+        <table class="table">
+            <caption style="caption-side: top;font-weight: bold;font-size:150%">IPSec Security Event</caption>
+            <thead>
+            <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Machine</th>
+                <th scope="col">Message</th>
+                <th scope="col">Source</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in ipEvent %}
+            <tr>
+                <td class="c1">{{item.id}}</td>
+                <td class="c2">{{item.machine}}</td>
+                <td class="c3"><span>{{item.msg}}</span></td>
+                <td class="c4"><span>{{item.source}}</span></td>
+                <td class="c5"><span>{{item.time}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="table-responsive col-md-6 scrollbar">
+    <table class="table">
+        <caption style="caption-side: top;font-weight: bold;font-size:150%">Hash Security Event</caption>
+        <thead>
+        <tr>
+            <th scope="col">Event ID</th>
+            <th scope="col">Machine</th>
+            <th scope="col">Message</th>
+            <th scope="col">Source</th>
+            <th scope="col">Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in hashEvent %}
+        <tr>
+            <td class="c1">{{item.id}}</td>
+            <td class="c2">{{item.machine}}</td>
+            <td class="c3"><span>{{item.msg}}</span></td>
+            <td class="c4"><span>{{item.source}}</span></td>
+            <td class="c5"><span>{{item.time}}</span></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+{% block javascript %}
+<script type="text/javascript">
+
+    var chartColors = {
+        red: 'rgb(220,20,60)',
+        green: 'rgb(124,252,0)',
+        orange: 'rgb(255,69,0)'
+    };
+
+    var ctx = document.getElementById("myChart");
+    ctx.width = 10;
+    ctx.height = 20;
+    var labels = '{{ labels | tojson |  safe }}'
+    var data = '{{ data | tojson |  safe }}'
+
+    var label1 = JSON.parse(labels)
+    var data1 = JSON.parse(data)
+
+    var myChart = new Chart(ctx,
+        {
+            type: "bar",
+            options:
+                {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onClick: (evt, item) => {
+                        var label = item[0]['_model'].label
+                        document.getElementById("e02").value = label
+                        document.getElementById("e02").click();
+                    },
+                    scales:
+                        {
+                            yAxes:
+                                [{
+                                    ticks:
+                                        {
+                                            beginAtZero: true
+                                        }
+                                }]
+                        }
+                },
+            data:
+                {
+                    labels: label1,
+
+                    datasets:
+                        [
+                            {
+                                label: "Security Event Highlight",
+                                data: data1,
+                                backgroundColor:
+                                    [
+                                        chartColors.green,
+                                        chartColors.green,
+                                        chartColors.green,
+                                        chartColors.green,
+                                        chartColors.green,
+                                        chartColors.green,
+                                        chartColors.green,
+                                        chartColors.green
+                                    ]
+                            }
+                        ]
+
+                }
+        });
+
+    var dataset = myChart.data.datasets[0];
+    for (var i = 0; i < dataset.data.length; i++) {
+        if (dataset.data[i] > 150 && dataset.data[i] < 500) {
+            dataset.backgroundColor[i] = chartColors.orange;
+        } else if (dataset.data[i] >= 500) {
+            dataset.backgroundColor[i] = chartColors.red;
+        }
+    }
+    myChart.update();
+
+</script>
+
+{% endblock %}
+<script type="text/javascript"
+        src="{{ url_for('static', filename='script.js') }}"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
