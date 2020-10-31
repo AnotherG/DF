@@ -32,8 +32,7 @@ chmod 777 onestoplogs.bat (to provide permissions to execute the script)<br/>
 ./onestoplogs.bat (run the script)<br/>
 Files extracted will be in the same directory as the bat file. ({.bat Directory}/temp/logs/linux/{today's date})<br/>
 
-* If you see the $'\r': command not found error. enter <sed -i 's/\r//g' onestoplogs.bat> into the terminal. <br/>
-This is because Windows uses \r\n as the line terminator while Linux (and most other operating systems) use \n alone. <br/>
+*If you see the $'\r': command not found error. enter <sed -i 's/\r//g' onestoplogs.bat> into the terminal. <br/> This is because Windows uses \r\n as the line terminator while Linux (and most other operating systems) use \n alone. <br/>
 
 Once the logs have been extracted<br/>
 Run the webapp.py<br/>
