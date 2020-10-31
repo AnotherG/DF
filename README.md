@@ -35,7 +35,7 @@ Files extracted will be in the same directory as the bat file. ({.bat Directory}
 Once the logs have been extracted<br/>
 Run the webapp.py<br/>
 Open a web browser and type in 127.0.0.1:5000<br/>
-Insert the file path of the logs into the text box ({.bat Directory}/temp/logs/linux/{today's date})
+Insert the file path of the logs into the text box ({.bat Directory}/temp/logs/{OS}/{today's date})
 
 ## Team Members
 Tay Qi Wen Jordan (1902114)<br/>
