@@ -133,11 +133,11 @@ def Timeline():
 
 # ----------------------------------------------WINDOW END--------------------------------------------------------#
 # ----------------------------------------------ERROR HANDLING START----------------------------------------------#
-#@app.errorhandler(Exception)
-#def handle_exception(e):
-#    return render_template("404.html", e=e)
+@app.errorhandler(Exception)
+def handle_exception(e):
+    return render_template("404.html", e=e)
 # ----------------------------------------------ERROR HANDLING END------------------------------------------------#
 
 if __name__ == '__main__':
-    #app.register_error_handler(404, handle_exception)
+    app.register_error_handler(404, handle_exception)
     app.run(debug=True)
