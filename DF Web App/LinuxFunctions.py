@@ -5,7 +5,7 @@ import os
 # Get list of users
 def ReadUsers(path):
     items = []
-    if os.stat(path + '\\lastLog.csv').st_size == 0:
+    if os.stat(path + '\\userList.txt').st_size == 0:
         return items
     else:
         with open(path + '\\userList.txt', 'r') as f:
@@ -19,7 +19,7 @@ def ReadUsers(path):
 # last command
 def Last(path, user):
     items = []
-    if os.stat(path + '\\lastLog.csv').st_size == 0:
+    if os.stat(path + '\\last\\' + user + '.txt').st_size == 0:
         return items
     else:
         with open(path + '\\last\\' + user + '.txt', 'r') as f:
@@ -34,7 +34,7 @@ def Last(path, user):
 # last b command
 def LoginFailure(path, user):
     items = []
-    if os.stat(path + '\\lastLog.csv').st_size == 0:
+    if os.stat(path + '\\lastb\\' + user + '.txt').st_size == 0:
         return items
     else:
         with open(path + '\\lastb\\' + user + '.txt', 'r') as f:
@@ -49,7 +49,7 @@ def LoginFailure(path, user):
 # history command
 def readCommands(path, user):
     items = []
-    if os.stat(path + '\\lastLog.csv').st_size == 0:
+    if os.stat(path + '\\history\\' + user + '.txt').st_size == 0:
         return items
     else:
         with open(path + '\\history\\' + user + '.txt', 'r') as f:
@@ -85,7 +85,7 @@ def LastLogs(path):
 # getting list of newly installed usb devices from kern logs
 def USB(path):
     items = []
-    if os.stat(path + '\\lastLog.csv').st_size == 0:
+    if os.stat(path + '\\kernLogs.csv').st_size == 0:
         return items
     else:
         with open(path + '\\kernLogs.csv', 'r') as f:
@@ -112,7 +112,7 @@ def USB(path):
 # getting list of users who tried to su from auth logs
 def su(path):
     items = []
-    if os.stat(path + '\\lastLog.csv').st_size == 0:
+    if os.stat(path + '\\authLogs.csv').st_size == 0:
         return items
     else:
         with open(path + '\\authLogs.csv', 'r') as f:
@@ -134,7 +134,7 @@ def su(path):
 # getting (warning, error, critical) messages from syslogs
 def syslogs(path):
     items = []
-    if os.stat(path + '\\lastLog.csv').st_size == 0:
+    if os.stat(path + '\\syslogs.csv').st_size == 0:
         return items
     else:
         with open(path + '\\syslogs.csv', 'r', encoding="utf8") as f:
