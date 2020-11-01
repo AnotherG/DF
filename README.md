@@ -7,6 +7,8 @@ Windows 10<br/>
 Linux (Kali)<br/>
 Linux (Ubuntu)
 
+Youtube link: https://www.youtube.com/watch?v=0cq_lnETjkA<br/>
+
 ## Installation
 For installation: <br/>
 The web application runs on python flask specifically python3<br/>
