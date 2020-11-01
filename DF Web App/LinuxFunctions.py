@@ -24,11 +24,14 @@ def Last(path, user):
     else:
         with open(path + '\\last\\' + user + '.txt', 'r') as f:
             reader = csv.reader(f, delimiter="|")
-            for row in reader:
-                if row[0] == user:
-                    an_item = dict(user=row[0], sh=row[1], loc=row[2], time=row[3])
-                    items.append(an_item)
-            return items
+            try:
+                for row in reader:
+                    if row[0] == user:
+                        an_item = dict(user=row[0], sh=row[1], loc=row[2], time=row[3])
+                        items.append(an_item)
+                return items
+            except csv.Error:
+                return items
 
 
 # last b command
@@ -39,11 +42,14 @@ def LoginFailure(path, user):
     else:
         with open(path + '\\lastb\\' + user + '.txt', 'r') as f:
             reader = csv.reader(f, delimiter="|")
-            for row in reader:
-                if row[0] == user:
-                    an_item = dict(user=row[0], sh=row[1], loc=row[2], time=row[3])
-                    items.append(an_item)
-            return items
+            try:
+                for row in reader:
+                    if row[0] == user:
+                        an_item = dict(user=row[0], sh=row[1], loc=row[2], time=row[3])
+                        items.append(an_item)
+                return items
+            except csv.Error:
+                return items
 
 
 # history command
@@ -73,12 +79,14 @@ def LastLogs(path):
     else:
         with open(path + '\\lastLog.csv', 'r') as f:
             reader = csv.reader(f, delimiter="|")
-            next(f)
-            for row in reader:
-                an_item = dict(user=row[0], port=row[1], from1=row[2], latest=row[3])
-                items.append(an_item)
-            return items
-
+            try:
+                next(f)
+                for row in reader:
+                    an_item = dict(user=row[0], port=row[1], from1=row[2], latest=row[3])
+                    items.append(an_item)
+                return items
+            except csv.Error:
+                return items
 
 
 
@@ -90,23 +98,26 @@ def USB(path):
     else:
         with open(path + '\\kernLogs.csv', 'r') as f:
             reader = csv.reader(f, delimiter="|")
-            next(f)
-            i = 0
-            for row in reader:
-                if row[3].find("New USB device found") == -1:
-                    i += 1
-                    pass
-                else:
-                    next(reader)[3]
-                    b = (next(reader)[3])
-                    a = (next(reader)[3])
-                    c = (next(reader)[3])
-                    if c.find("SerialNumber") == -1:
-                        an_item = dict(time=row[0], man=a.split(':')[-1], product=b.split(':')[-1], sn="None")
+            try:
+                next(f)
+                i = 0
+                for row in reader:
+                    if row[3].find("New USB device found") == -1:
+                        i += 1
+                        pass
                     else:
-                        an_item = dict(time=row[0], man=a.split(':')[-1], product=b.split(':')[-1], sn=c.split(':', 2)[-1])
-                    items.append(an_item)
-            return items
+                        next(reader)[3]
+                        b = (next(reader)[3])
+                        a = (next(reader)[3])
+                        c = (next(reader)[3])
+                        if c.find("SerialNumber") == -1:
+                            an_item = dict(time=row[0], man=a.split(':')[-1], product=b.split(':')[-1], sn="None")
+                        else:
+                            an_item = dict(time=row[0], man=a.split(':')[-1], product=b.split(':')[-1], sn=c.split(':', 2)[-1])
+                        items.append(an_item)
+                return items
+            except csv.Error:
+                return items
 
 
 # getting list of users who tried to su from auth logs
@@ -139,20 +150,25 @@ def syslogs(path):
     else:
         with open(path + '\\syslogs.csv', 'r', encoding="utf8") as f:
             reader = csv.reader(f, delimiter="|")
-            next(f)
-            for row in reader:
-                if row[3].find("warning") == -1:
-                    if row[3].find("error") == -1:
-                        pass
-                        if row[3].find("critical") == -1:
+            try:
+
+                next(f)
+
+                for row in reader:
+                    if row[3].find("warning") == -1:
+                        if row[3].find("error") == -1:
                             pass
+                            if row[3].find("critical") == -1:
+                                pass
+                            else:
+                                an_item = dict(time=row[0], services=row[2], message=row[3], level="Critical")
+                                items.append(an_item)
                         else:
-                            an_item = dict(time=row[0], services=row[2], message=row[3], level="Critical")
+                            an_item = dict(time=row[0], services=row[2], message=row[3], level="Error")
                             items.append(an_item)
                     else:
-                        an_item = dict(time=row[0], services=row[2], message=row[3], level="Error")
+                        an_item = dict(time=row[0], services=row[2], message=row[3], level="Warning")
                         items.append(an_item)
-                else:
-                    an_item = dict(time=row[0], services=row[2], message=row[3], level="Warning")
-                    items.append(an_item)
-            return items
+                return items
+            except csv.Error:
+                return items
